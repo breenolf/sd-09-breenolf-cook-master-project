@@ -1,11 +1,6 @@
-// const boom = require('@hapi/boom');
+const boom = require('@hapi/boom');
 const RecipeSchema = require('../schema/recipe');
 const RecipesModel = require('../models/recipes');
-
-// const findUserByEmail = async (email) => {
-//   const userExists = await UserModel.getUserByEmail(email);
-//   if (userExists) throw boom.conflict('Email already registered');
-// };
 
 const createRecipe = async (payload, userId) => {
   const { error } = RecipeSchema.validate(payload);
@@ -22,7 +17,16 @@ const getRecipes = async () => {
   return result;
 };
 
+const getRecipeById = async (id) => {
+  const result = await RecipesModel.getRecipeByIdDB(id);
+  
+  if (!result) throw boom.notFound('recipe not found');
+
+  return result;
+};
+
 module.exports = {
   createRecipe,
   getRecipes,
+  getRecipeById,
 };
