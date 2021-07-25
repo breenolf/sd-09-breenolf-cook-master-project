@@ -1,5 +1,6 @@
 module.exports = (err, _req, res, _next) => {
   if (err.isJoi) {
+    console.log(err);
     return res.status(400).json({ message: err.message });
   }
 
