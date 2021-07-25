@@ -16,6 +16,13 @@ const createRecipe = async (payload, userId) => {
   return result;
 };
 
+const getRecipes = async () => {
+  const result = await RecipesModel.getRecipesDB();
+
+  return result;
+};
+
 module.exports = {
   createRecipe,
+  getRecipes,
 };
