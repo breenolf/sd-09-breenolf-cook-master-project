@@ -25,8 +25,25 @@ const getRecipeById = async (id) => {
   return result;
 };
 
+const editRecipe = async (recipePayload, userParams, recipeId) => {
+  const { error } = RecipeSchema.validate(recipePayload);
+  if (error) throw error;
+
+  const { _id, role } = userParams;
+  const recipe = await RecipesModel.getRecipeByIdDB(recipeId);
+
+  if (_id !== recipe.userId && role === 'user') {
+    throw boom.unauthorized('Not authorization or permission');
+  }
+
+  const result = await RecipesModel.editRecipeDB(recipePayload, recipeId);
+  
+  return result;
+};
+
 module.exports = {
   createRecipe,
   getRecipes,
   getRecipeById,
+  editRecipe,
 };
