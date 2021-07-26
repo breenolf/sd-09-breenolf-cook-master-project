@@ -69,6 +69,14 @@ const addImage = async (filename, id) => {
   return result;
 };
 
+const getImage = async (filename) => {
+  const url = IMAGE_BASE_URL + filename;
+
+  const result = await RecipesModel.getImageDB(url);
+
+  return result;
+};
+
 module.exports = {
   createRecipe,
   getRecipes,
@@ -76,4 +84,5 @@ module.exports = {
   editRecipe,
   deleteRecipe,
   addImage,
+  getImage,
 };

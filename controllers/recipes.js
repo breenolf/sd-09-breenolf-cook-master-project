@@ -55,6 +55,14 @@ const addRecipeImage = rescue(async (req, res) => {
   return res.status(HTTP_STATUS_OK).json(result);
 });
 
+const getImage = rescue(async (req, res) => {
+  const { filename } = req.params;
+
+  const result = await RecipeService.getImage(filename);
+
+  res.status(HTTP_STATUS_OK).send(result);
+});
+
 module.exports = {
   postRecipe,
   getRecipes,
@@ -62,4 +70,5 @@ module.exports = {
   putRecipe,
   deleteRecipe,
   addRecipeImage,
+  getImage,
 };
