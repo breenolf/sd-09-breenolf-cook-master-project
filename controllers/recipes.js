@@ -3,6 +3,7 @@ const RecipeService = require('../services/recipes');
 
 const HTTP_STATUS_CREATED = 201;
 const HTTP_STATUS_OK = 200;
+const HTTP_STATUS_NO_CONTENT = 204;
 
 const postRecipe = rescue(async (req, res) => {
   const recipePayload = req.body;
@@ -36,9 +37,20 @@ const putRecipe = rescue(async (req, res) => {
   return res.status(HTTP_STATUS_OK).json(result);
 });
 
+const deleteRecipe = rescue(async (req, res) => {
+  console.log('111');
+  const userParams = req.user;
+  const { id } = req.params;
+
+  const result = await RecipeService.deleteRecipe(userParams, id);
+
+  return res.status(HTTP_STATUS_NO_CONTENT).json(result);
+});
+
 module.exports = {
   postRecipe,
   getRecipes,
   getRecipeById,
   putRecipe,
+  deleteRecipe,
 };

@@ -32,6 +32,8 @@ const editRecipe = async (recipePayload, userParams, recipeId) => {
   const { _id, role } = userParams;
   const recipe = await RecipesModel.getRecipeByIdDB(recipeId);
 
+  if (!recipe) throw boom.notFound('recipeId not found');
+
   if (_id !== recipe.userId && role === 'user') {
     throw boom.unauthorized('Not authorization or permission');
   }
@@ -41,9 +43,23 @@ const editRecipe = async (recipePayload, userParams, recipeId) => {
   return result;
 };
 
+const deleteRecipe = async (userParams, id) => {
+  const recipe = await RecipesModel.getRecipeByIdDB(id);
+  if (!recipe) throw boom.notFound('recipeId not found');
+  
+  const { _id, role } = userParams;
+  if (_id !== recipe.userId && role === 'user') {
+    throw boom.unauthorized('Not authorization or permission');
+  }
+
+  const result = await RecipesModel.deleteRecipeDB(id);
+  return result;
+};
+
 module.exports = {
   createRecipe,
   getRecipes,
   getRecipeById,
   editRecipe,
+  deleteRecipe,
 };

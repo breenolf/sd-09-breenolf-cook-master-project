@@ -37,9 +37,16 @@ const editRecipeDB = async (payload, id) => {
   return recipeEdited;
 };
 
+const deleteRecipeDB = async (id) => {
+  const db = await conn();
+  await db.collection('recipes').deleteOne({ _id: ObjectId(id) });
+  return 'ok';
+};
+
 module.exports = {
   createRecipeDB,
   getRecipesDB,
   getRecipeByIdDB,
   editRecipeDB,
+  deleteRecipeDB,
 };
