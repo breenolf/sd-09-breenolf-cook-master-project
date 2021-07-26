@@ -2,6 +2,8 @@ const boom = require('@hapi/boom');
 const RecipeSchema = require('../schema/recipe');
 const RecipesModel = require('../models/recipes');
 
+const IMAGE_BASE_URL = 'localhost:3000/src/uploads/';
+
 const createRecipe = async (payload, userId) => {
   const { error } = RecipeSchema.validate(payload);
   if (error) throw error;
@@ -32,7 +34,7 @@ const editRecipe = async (recipePayload, userParams, recipeId) => {
   const { _id, role } = userParams;
   const recipe = await RecipesModel.getRecipeByIdDB(recipeId);
 
-  if (!recipe) throw boom.notFound('recipeId not found');
+  if (!recipe) throw boom.notFound('recipe not found');
 
   if (_id !== recipe.userId && role === 'user') {
     throw boom.unauthorized('Not authorization or permission');
@@ -45,7 +47,7 @@ const editRecipe = async (recipePayload, userParams, recipeId) => {
 
 const deleteRecipe = async (userParams, id) => {
   const recipe = await RecipesModel.getRecipeByIdDB(id);
-  if (!recipe) throw boom.notFound('recipeId not found');
+  if (!recipe) throw boom.notFound('recipe not found');
   
   const { _id, role } = userParams;
   if (_id !== recipe.userId && role === 'user') {
@@ -56,10 +58,22 @@ const deleteRecipe = async (userParams, id) => {
   return result;
 };
 
+const addImage = async (filename, id) => {
+  const url = IMAGE_BASE_URL + filename;
+
+  const recipeExists = await RecipesModel.getRecipeByIdDB(id);
+  if (!recipeExists) throw boom.notFound('recipe not found');
+
+  const result = await RecipesModel.addImageDB(url, id);
+
+  return result;
+};
+
 module.exports = {
   createRecipe,
   getRecipes,
   getRecipeById,
   editRecipe,
   deleteRecipe,
+  addImage,
 };

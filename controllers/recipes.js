@@ -1,8 +1,8 @@
 const rescue = require('express-rescue');
 const RecipeService = require('../services/recipes');
 
-const HTTP_STATUS_CREATED = 201;
 const HTTP_STATUS_OK = 200;
+const HTTP_STATUS_CREATED = 201;
 const HTTP_STATUS_NO_CONTENT = 204;
 
 const postRecipe = rescue(async (req, res) => {
@@ -38,7 +38,6 @@ const putRecipe = rescue(async (req, res) => {
 });
 
 const deleteRecipe = rescue(async (req, res) => {
-  console.log('111');
   const userParams = req.user;
   const { id } = req.params;
 
@@ -47,10 +46,20 @@ const deleteRecipe = rescue(async (req, res) => {
   return res.status(HTTP_STATUS_NO_CONTENT).json(result);
 });
 
+const addRecipeImage = rescue(async (req, res) => {
+  const { filename } = req.file;
+  const { id } = req.params;
+  
+  const result = await RecipeService.addImage(filename, id);
+
+  return res.status(HTTP_STATUS_OK).json(result);
+});
+
 module.exports = {
   postRecipe,
   getRecipes,
   getRecipeById,
   putRecipe,
   deleteRecipe,
+  addRecipeImage,
 };
