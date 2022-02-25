@@ -22,7 +22,7 @@ Esse projeto foi desenvolvido visando os seguintes pontos de aprendizado:
 
 ---
 
-## O que foi desenvolvido
+## O que foi desenvolvido - (projeto ainda em desenvolvimento)
 
 O objetivo foi desenvolver uma aplicação utilizando a arquitetura MSC onde deverá ser possível fazer o cadastro e login de pessoas usuárias, onde apenas essas pessoas poderão acessar, modificar e deletar as receitas que cadastrou.
 
